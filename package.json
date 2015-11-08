@@ -21,14 +21,22 @@
   },
   "homepage": "https://github.com/Karolusrex/Konnektid-exercise",
   "dependencies": {
+    "async": "^1.5.0",
     "babel": "^6.0.15",
     "express": "^4.13.3",
     "express-handlebars": "^2.0.1",
     "gladius-forge": "^2.0.0",
+    "jest": "^0.1.40",
+    "jsdom": "^7.0.2",
+    "mocha-mongoose": "^1.1.0",
+    "mongodb": "^2.0.48",
+    "mongoose": "^4.2.4",
     "node-jsx": "^0.13.3",
     "react": "^0.14.0",
+    "react-addons-test-utils": "^0.14.2",
     "react-dom": "^0.14.0",
-    "react-router": "^1.0.0-rc3"
+    "react-router": "^1.0.0-rc3",
+    "simple-jsdom": "0.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",

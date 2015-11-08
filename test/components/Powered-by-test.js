@@ -13,13 +13,6 @@ describe('Powered by', () => {
     expect(poweredBy.type).to.equal('div');
   });
 
-  it('should render the deps list and "react" should be present', () => {
-    let ul = poweredBy.props.children.filter(c => c.type === 'ul');
-    let li = ul[0].props.children[0].props.children;
-
-    expect(li).to.equal('react');
-  });
-
   it('should display all the dependencies and dev dependencies', () => {
     let ul = poweredBy.props.children.filter(c => c.type === 'ul');
     let renderedDeps = ul[0].props.children.length;

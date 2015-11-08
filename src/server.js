@@ -1,23 +1,23 @@
 import path from 'path';
 import express from 'express';
 import http from 'http';
+import async from 'async';
 import exphbs from 'express-handlebars';
 import routes from './routes';
 import createLocation from 'history/lib/createLocation';
 import Router, { match, RoutingContext } from 'react-router';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
-
-
+import mongoose from 'mongoose';
+import {dbURI} from 'config';
 
 let port = process.env.PORT || 8080;
 
+
+
 let app = express();
 
-
-
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
-
 app.set('trust proxy', 'loopback');
 app.set('x-powered-by', false);
 app.set('view engine','handlebars');
@@ -26,7 +26,7 @@ app.set('view engine','handlebars');
 let distDir = path.sep + path.join(...(__dirname.split(path.sep).slice(1,-1).concat(["dist"])));
 
 
-
+//Server side rendering when handling routing
 app.use((req, res) => {
   let location = createLocation(req.originalUrl);
     
@@ -48,17 +48,13 @@ app.use((req, res) => {
 let router = express();
 
 
-console.log(distDir);
-
 router.use('/',express.static(distDir));
 router.use('/*',app);
 
-
-let server = router.listen(port, function() {
-  console.log('Server listening on port ' + port);
-});
-
-
-
-// Index Route
-//app.get('/', routes.index);
+async.waterfall([
+    (next) => { mongoose.connect(dbURI) },
+    (next) => router.listen(port, function() {
+        console.log('Server listening on port ' + port);
+        next();
+    })
+]);
