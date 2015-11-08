@@ -12,6 +12,9 @@ import notify from 'gulp-notify';
 import browserSync, { reload } from 'browser-sync';
 import sourcemaps from 'gulp-sourcemaps';
 import postcss from 'gulp-postcss';
+//import sass from 'gulp-sass';
+import sass from 'gulp-ruby-sass';
+import bower from 'gulp-bower';
 import nested from 'postcss-nested';
 import vars from 'postcss-simple-vars';
 import extend from 'postcss-simple-extend';
@@ -24,11 +27,15 @@ import nodemon from 'gulp-nodemon';
 const paths = {
   bundle: 'app.js',
   srcJsx: 'src/client.js',
-  srcCss: 'src/**/*.css',
+  srcCss: 'src/**/*.scss',
   srcImg: 'src/images/**',
   dist: 'dist',
   distJs: 'dist/js',
-  distImg: 'dist/images'
+  distImg: 'dist/images',
+  distCss: 'dist/css',
+  styleDir: './src/styles',
+  sassMain: 'main.scss',
+  bowerDir: './bower_components'
 };
 
 const REFRESHDELAY = 5000;
@@ -76,12 +83,24 @@ gulp.task('browserify', () => {
 });
 
 gulp.task('styles', () => {
-  gulp.src(paths.srcCss)
+    return sass(paths.styleDir + '/' + paths.sassMain,{
+         style: 'compressed',
+         loadPath: [
+             paths.styleDir,
+             paths.bowerDir + '/bootstrap-sass-official/assets/stylesheets',
+             paths.bowerDir + '/fontawesome/scss',
+         ]
+     })
+        .on("error", notify.onError(function (error) {
+             return "Error: " + error.message;
+         }))
+     .pipe(gulp.dest(paths.distCss));
+  /*gulp.src(paths.srcCss)
   .pipe(sourcemaps.init())
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
   .pipe(sourcemaps.write('.'))
   .pipe(gulp.dest(paths.dist))
-  .pipe(reload({stream: true}));
+  .pipe(reload({stream: true}));*/
 });
 
 gulp.task('htmlReplace', () => {
@@ -102,6 +121,15 @@ gulp.task('lint', () => {
   .pipe(eslint.format());
 });
 
+gulp.task('bower', function() {
+    return bower()
+        .pipe(gulp.dest(paths.bowerDir));
+});
+
+gulp.task('icons', function() {
+    return gulp.src(paths.bowerDir + '/fontawesome/fonts/**.*')
+        .pipe(gulp.dest(paths.dist + '/fonts'));
+});
 
 gulp.task('watchServ',() => {
     return nodemon({
@@ -127,5 +155,5 @@ gulp.task('watch', cb => {
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'images'], cb);
+  runSequence('clean', ['bower', 'browserify', 'styles', 'htmlReplace', 'images'], cb);
 });

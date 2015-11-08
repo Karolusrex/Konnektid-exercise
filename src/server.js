@@ -9,7 +9,7 @@ import Router, { match, RoutingContext } from 'react-router';
 import React from 'react';
 import {renderToString} from 'react-dom/server';
 import mongoose from 'mongoose';
-import {dbURI} from 'config';
+import {dbURI} from './config';
 
 let port = process.env.PORT || 8080;
 
@@ -52,7 +52,7 @@ router.use('/',express.static(distDir));
 router.use('/*',app);
 
 async.waterfall([
-    (next) => { mongoose.connect(dbURI) },
+    (next) => { mongoose.connect(dbURI,next) },
     (next) => router.listen(port, function() {
         console.log('Server listening on port ' + port);
         next();

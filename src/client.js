@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route } from 'react-router';
 import App from './components/App';
-import Todo from './components/Todo';
 import PoweredBy from './components/Powered-by';
 import About from './components/About';
 import createHistory from 'history/lib/createBrowserHistory';
@@ -18,3 +17,4 @@ ReactDOM.render(
     </Router>,
     document.getElementById('react-app')
 );
+ 
