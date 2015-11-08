@@ -11,9 +11,6 @@
     "learning"
   ],
   "scripts": {
-    "watch": "watchify app.js -o dist/js/app.js -v",
-    "browserify": "browserify app.js | uglifyjs > dist/js/app.js",
-    "prestart": "gulp build",
     "start": "node main.js",
     "test": "mocha --reporter nyan --compilers js:babel/register --recursive"
   },
