@@ -19,10 +19,11 @@ import cssnano from 'cssnano';
 import htmlReplace from 'gulp-html-replace';
 import image from 'gulp-image';
 import runSequence from 'run-sequence';
+import nodemon from 'gulp-nodemon';
 
 const paths = {
   bundle: 'app.js',
-  srcJsx: 'src/Index.js',
+  srcJsx: 'src/client.js',
   srcCss: 'src/**/*.css',
   srcImg: 'src/images/**',
   dist: 'dist',
@@ -30,15 +31,15 @@ const paths = {
   distImg: 'dist/images'
 };
 
+const REFRESHDELAY = 5000;
+
 gulp.task('clean', cb => {
   rimraf('dist', cb);
 });
 
 gulp.task('browserSync', () => {
   browserSync({
-    server: {
-      baseDir: './'
-    }
+    proxy:"localhost:8080"
   });
 });
 
@@ -46,18 +47,21 @@ gulp.task('watchify', () => {
   let bundler = watchify(browserify(paths.srcJsx, watchify.args));
 
   function rebundle() {
-    return bundler
+    bundler
       .bundle()
       .on('error', notify.onError())
       .pipe(source(paths.bundle))
       .pipe(gulp.dest(paths.distJs))
       .pipe(reload({stream: true}));
+      return bundler;
   }
 
   bundler.transform(babelify)
   .on('update', rebundle);
   return rebundle();
 });
+
+
 
 gulp.task('browserify', () => {
   browserify(paths.srcJsx)
@@ -98,13 +102,27 @@ gulp.task('lint', () => {
   .pipe(eslint.format());
 });
 
+
+gulp.task('watchServ',() => {
+    return nodemon({
+        script: 'main.js',
+        watch:['src/**.*','views/**.*', 'main.js'],
+        env: { 'NODE_ENV': 'development' }
+    }).on('restart', function () {
+      setTimeout(() => {
+          reload({ stream:false});
+      }, REFRESHDELAY);
+    })
+});
+
+
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCss, ['styles']);
   gulp.watch(paths.srcJsx, ['lint']);
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'images'], cb);
+  runSequence('clean', ['browserSync', 'watchServ', 'watchTask', 'watchify', 'styles', 'lint', 'images'], cb);
 });
 
 gulp.task('build', cb => {
