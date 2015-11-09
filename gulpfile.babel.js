@@ -134,7 +134,7 @@ gulp.task('icons', function() {
 gulp.task('watchServ',() => {
     return nodemon({
         script: 'main.js',
-        watch:['src/**.*','views/**.*', 'main.js'],
+        watch:['src/**/*.js','views/**/.*', 'main.js'],
         env: { 'NODE_ENV': 'development' }
     }).on('restart', function () {
       setTimeout(() => {
