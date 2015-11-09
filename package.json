@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Karolusrex/Konnektid-exercise",
   "dependencies": {
+    "@alexkuz/react-router-bootstrap": "^0.18.0-beta",
     "async": "^1.5.0",
     "babel": "^6.0.15",
     "express": "^4.13.3",
@@ -38,6 +39,7 @@
     "node-jsx": "^0.13.3",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.2",
+    "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
     "react-router": "^1.0.0-rc3",
     "simple-jsdom": "0.0.2"
