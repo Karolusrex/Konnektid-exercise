@@ -29,7 +29,6 @@ let distDir = path.sep + path.join(...(__dirname.split(path.sep).slice(1,-1).con
 //Server side rendering when handling routing
 app.use((req, res) => {
   let location = createLocation(req.originalUrl);
-    
   match({ routes, location }, (error, redirectLocation, renderProps) => {
     if (redirectLocation)
       res.status(301).redirect(redirectLocation.pathname + redirectLocation.search)
@@ -49,6 +48,7 @@ let router = express();
 
 
 router.use('/',express.static(distDir));
+//router.get('/',(req,res) => { res.redirect('/home') });
 router.use('/*',app);
 
 async.waterfall([
