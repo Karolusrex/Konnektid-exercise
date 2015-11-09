@@ -1,29 +1,36 @@
-import React from 'react/addons';
-import { expect } from 'chai';
+import React from 'react';
+import TestUtils from 'react-addons-test-utils';
+import { expect, assert } from 'chai';
 import App from '../../src/components/App';
 import * as packageJSON from '../../package.json';
 
 describe('App', () => {
-  const {TestUtils} = React.addons;
-  const shallowRenderer = TestUtils.createRenderer();
-  shallowRenderer.render(<App />);
-  const app = shallowRenderer.getRenderOutput();
+  let prepareElement = function(){
+        
+        let renderedComponent = TestUtils.renderIntoDocument(
+            <App />
+        );
+        
+        let inputComponent = TestUtils.scryRenderedDOMComponentsWithTag(
+            renderedComponent,
+            'div'
+            )[0];
+        return inputComponent;
+    };
 
-  it('should have a div as container', () => {
-    expect(app.type).to.equal('div');
+  it('should contain all menu items', () => {
+      let generatedHTML = prepareElement().outerHTML;
+      assert.include(generatedHTML,'Home');
+      assert.include(generatedHTML,'About');
+      assert.include(generatedHTML,'Powered by');
+  });
+    
+    it('should have a div as container', () => {
+        let elementTag = prepareElement().tagName;
+        assert(elementTag == 'div' || elementTag == 'DIV');
   });
 
-  it('should have a version number that match the package.json version property', () => {
-    let version = packageJSON.version;
-    let h1 = app.props.children[0].props.children;
+  
 
-    expect(h1).to.contain(<h1>React Starterify {version}</h1>);
-  });
-
-  it('should return something', () => {
-    let returnSomething = App.prototype.returnSomething('hello!');
-
-    expect(returnSomething).to.be.equal('hello!');
-  });
 
 });
