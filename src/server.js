@@ -48,7 +48,6 @@ let router = express();
 
 
 router.use('/',express.static(distDir));
-//router.get('/',(req,res) => { res.redirect('/home') });
 router.use('/*',app);
 
 async.waterfall([

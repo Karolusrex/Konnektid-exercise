@@ -1,8 +1,6 @@
 import jest from 'jest';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server'
 import TestUtils from 'react-addons-test-utils';
 
 import { expect } from 'chai';
@@ -11,7 +9,7 @@ import TodoItem from '../../src/components/Todo-item';
 
 describe('Todo item', () => {
   
-  
+
     let prepareItem = function(itemData){
         
         let renderedComponent = TestUtils.renderIntoDocument(

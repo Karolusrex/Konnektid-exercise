@@ -32,21 +32,29 @@ describe('Todo item', () => {
             let todoListStruct = {items: todoItems.map((item) => item._id)}
             new TodoList(todoListStruct).save((error,model) => {
                 expect(error).to.be.null;
-                done(error,model);
+                cb(error,model);
             });
         });
     };
     it('can be saved', (done) => {
         saveTodoList(done);
     });
+     it('can be retreived', (done) => {
+        saveTodoList((errorAlwaysNull,model) => {
+            TodoList.find({},(error,results) => {
+                expect(results.length).to.be.equal(1);
+                done();
+            });
+        });
+    });
     
     it('should delete items on cascade', (done) => {
         saveTodoList((errorAlwaysNull,model) => {
-            TodoList.find({id:model._id}).remove((error) => {
+            model.remove((error,nRemoved) => {
                 expect(error).to.be.null;
                 TodoItem.find({},(error,results) => {
                     expect(error).to.be.null;
-                    expect(results.lenght).to.be.equal.to(0);
+                    expect(results.length).to.be.equal(0);
                     done();
                 });
             });

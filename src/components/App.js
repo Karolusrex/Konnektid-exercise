@@ -8,10 +8,6 @@ import {IndexLinkContainer} from 'react-router-bootstrap';
 import Home from './Home';
 
 export default React.createClass({
-  returnSomething(something) {
-    //this is only for testing purposes. Check /test/components/App-test.js
-    return something;
-  },
     generateMenuItem(link,text,eventKey, query={}) {
         
         return (
@@ -29,7 +25,7 @@ export default React.createClass({
             
         <header>
         <Navbar>
-            <NavBrand><a href="#">Todo or notodo</a></NavBrand>
+            <NavBrand><a href="#">Todo app</a></NavBrand>
             <Nav>
                 {this.generateMenuItem("/","Home",1)}
                 {this.generateMenuItem("about","About",2)}
@@ -39,7 +35,7 @@ export default React.createClass({
           </Navbar>
         
         </header>
-        <Grid>
+        <Grid key="main-content">
                 {childContent}
         </Grid>
       </div>
