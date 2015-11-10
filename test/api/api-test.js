@@ -33,7 +33,24 @@ describe('API', function() {
         });
     });
     
-it('it should respond with added todo when querying /addTodo and the item should be consistent in the database with the Todolist', function(done) {
+    it('can change the info of a todo', function(done) {
+        this.saveTodoList((errorAlwaysNull,todoListReply) => {
+            this.client.post('/addTodo',{text:"do this and that",listId:todoListReply._id},(err,res,todoReply) => {
+                expect(err).to.be.null;
+                expect(todoReply.completed).to.be.false;
+                todoReply.completed=true;
+                todoReply.text="do this and that and that too";
+                this.client.post('/modifyTodo',todoReply,(err,res,todoReply2) => {
+                    expect(err).to.be.nulll;
+                    expect(todoReply2.text).to.equal(todoReply.text);
+                    expect(todoReply2.completed).to.be.true;
+                    done();
+                });
+            });
+        });
+    });
+    
+it('should respond with added todo when querying /addTodo and the item should be consistent in the database with the Todolist', function(done) {
     this.saveTodoList((errorAlwaysNull,todoListReply) => {
         this.client.post('/addTodo',{text:"do this and that",listId:todoListReply._id},(err,res,todoReply) => {
             expect(err).to.be.null;

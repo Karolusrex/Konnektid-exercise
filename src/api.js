@@ -8,6 +8,22 @@ export function addTodoList(req,res)  {
     });
 }
 
+export function modifyTodo(req,res) {
+    let TodoItem = mongoose.model('Todo-item');
+    TodoItem.findByIdAndUpdate(
+        req.body._id,
+        {$set: req.body},
+        {upsert:true, new:true},
+        function(err,model){
+            console.log(model);
+            if(!err){
+                res.send(model);
+            } else {
+                res.send(err);
+            }
+        });
+};
+
 export function addTodo(req,res)  {
     let TodoItem = mongoose.model('Todo-item');
     let TodoList = mongoose.model('Todo-list');
