@@ -31,6 +31,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-ruby-sass": "^2.0.5",
     "gulp-sass": "^2.1.0",
+    "immutable": "^3.7.5",
     "jest": "^0.1.40",
     "jsdom": "^7.0.2",
     "mocha-mongoose": "^1.1.0",
@@ -41,7 +42,11 @@
     "react-addons-test-utils": "^0.14.2",
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
+    "react-fa": "^4.0.0",
+    "react-redux": "^4.0.0",
     "react-router": "^1.0.0-rc3",
+    "redux": "^3.0.4",
+    "redux-router": "^1.0.0-beta4",
     "simple-jsdom": "0.0.2"
   },
   "devDependencies": {
