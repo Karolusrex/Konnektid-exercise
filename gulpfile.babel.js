@@ -95,12 +95,6 @@ gulp.task('styles', () => {
              return "Error: " + error.message;
          }))
      .pipe(gulp.dest(paths.distCss));
-  /*gulp.src(paths.srcCss)
-  .pipe(sourcemaps.init())
-  .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.dist))
-  .pipe(reload({stream: true}));*/
 });
 
 gulp.task('htmlReplace', () => {
@@ -155,5 +149,5 @@ gulp.task('watch', cb => {
 
 gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
-  runSequence('clean', ['bower', 'browserify', 'styles', 'htmlReplace', 'images'], cb);
+  runSequence('clean', ['icons','bower', 'browserify', 'styles', 'htmlReplace', 'images'], cb);
 });

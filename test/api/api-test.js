@@ -12,6 +12,7 @@ import mongoose from 'mongoose';
 import should from 'should';
 
 
+
 describe('API', function() {
     before(function(done){
         server((server) => {
@@ -28,7 +29,6 @@ describe('API', function() {
                     cb(err,body);
                 });
             };
-            
             done();
         });
     });

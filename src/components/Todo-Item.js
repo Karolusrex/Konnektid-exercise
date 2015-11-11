@@ -1,4 +1,6 @@
 import React from 'react';
+import Input from 'react-bootstrap/lib/Input';
+
 
 export default React.createClass({
     getInitialState: function(props) {
@@ -9,9 +11,10 @@ export default React.createClass({
         }
     },
   render() {
+      let todoTitle = (<h5> {this.props.item.text} </h5>);
     return (
       <div className="todo-item">
-        <input type="checkbox" defaultChecked={this.props.item.completed}/>{this.props.item.text}
+        <Input type="checkbox"  defaultChecked={this.props.item.completed} onClick={this.props.onClick} label={this.props.item.text}/>
       </div>
     );
   }

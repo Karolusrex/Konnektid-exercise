@@ -6,6 +6,8 @@ export const ADD_TODO = 'ADD_TODO'
 export const ADD_TODOS = 'ADD_TODOS'
 export const ADD_TODO_LIST = 'ADD_TODO_LIST'
 export const ADD_TODO_LISTS = 'ADD_TODO_LISTS'
+export const LINK_TODO = 'LINK_TODO'
+export const UNLINK_TODO = 'UNLINK_TODO'
 export const DELETE_TODO_LIST = 'DELETE_TODO_LIST'
 export const DELETE_TODO = 'DELETE_TODO'
 export const DELETE_TODOS = 'DELETE_TODOS'
@@ -39,14 +41,19 @@ export function completeTodo(todo) {
 export function deleteTodo(todo) {
   return { type: DELETE_TODO, todo }
 }
+
+export function linkTodo({todoId,listId}) {
+  return { type: LINK_TODO, todoId,listId }
+}
+    
+export function unLinkTodo({todoId,listId}) {
+  return { type: UNLINK_TODO, todoId,listId }
+}
     
 export function deleteTodos(todos) {
   return { type: DELETE_TODOS, todos }
 }
 
-
-    
-    
 export function addTodoList(todoList) {
     return { type: ADD_TODO_LIST, todoList }
 }

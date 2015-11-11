@@ -3,12 +3,18 @@ import TestUtils from 'react-addons-test-utils';
 import { expect, assert } from 'chai';
 import App from '../../src/components/App';
 import * as packageJSON from '../../package.json';
+import todoApp from '../../src/reducers';
+import {createStore} from 'redux';
+import { Provider } from 'react-redux';
 
 describe('App', () => {
   let prepareElement = function(){
-        
+        let store = createStore(todoApp);
+      
         let renderedComponent = TestUtils.renderIntoDocument(
-            <App />
+            <Provider store={store}>
+                <App />
+            </Provider>
         );
         
         let inputComponent = TestUtils.scryRenderedDOMComponentsWithTag(

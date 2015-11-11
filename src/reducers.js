@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
-import { ADD_TODO_LIST, ADD_TODO_LISTS, ADD_TODOS, DELETE_TODO, DELETE_TODOS, DELETE_TODO_LIST, ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from './actions'
+import { ADD_TODO_LIST, ADD_TODO_LISTS, ADD_TODOS, DELETE_TODO, DELETE_TODOS, DELETE_TODO_LIST, ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, LINK_TODO, UNLINK_TODO, VisibilityFilters } from './actions'
 const { SHOW_ALL } = VisibilityFilters
+import _ from 'lodash';
 
 function visibilityFilter(state = SHOW_ALL, action) {
   switch (action.type) {
@@ -35,24 +36,23 @@ function visibilityFilter(state = SHOW_ALL, action) {
   }
 }*/
 function todos(state = {}, action) {
+    let additionState = {};
   switch (action.type) {
     case ADD_TODO:
-        state[action.todo._id] = action.todo;
-        return state;
+        additionState[action.todo._id] = action.todo;
+        return Object.assign({},state, additionState);
     case ADD_TODOS:
         action.todos.map((todo) => {
-            state[todo._id] = todo;});
-        return state;
+            additionState[todo._id] = todo;});
+        return Object.assign({},state, additionState);
     case COMPLETE_TODO:
-        state[action.todo._id].completed=true;
-        return state;
+        additionState[action.todo._id] = state[action.todo._id];
+        additionState[action.todo._id].completed=true;
+        return Object.assign({},state, additionState);
     case DELETE_TODO:
-        delete state[action.todo._id];
-        return state;
+        return _.omit(state,action.todo._id);
     case DELETE_TODOS:
-        action.todos.map((todo) => {
-            delete state[todo._id];});
-        return state;
+        return _.omit(state,action.todos.map((todo) => todo._id.toString()));
     default:
       return state
   }
@@ -60,19 +60,31 @@ function todos(state = {}, action) {
 
 
 function todoLists(state = {}, action) {
-  switch (action.type) {
-    case ADD_TODO_LIST:
-        state[action.todoList._id] = action.todoList;
-        return state;
-    case ADD_TODO_LISTS:
-        action.todoLists.map((todoList) => {
-            state[todoList._id] = todoList;});
-        return state;
-    case DELETE_TODO_LIST:
-        delete state[action.todoList._id];
-          return state;
-    default:
-      return state
+    let additionState = {};
+    switch (action.type) {
+        case LINK_TODO:
+            additionState[action.listId] = state[action.listId];
+            additionState[action.listId].items.push(action.todoId);
+            return Object.assign({},state, additionState);
+        case UNLINK_TODO:
+            additionState[action.listId] = state[action.listId];
+            let removeIndex = additionState[action.listId].items.indexOf(action.todoId);
+            //There should always be an index here...
+            if(removeIndex > -1){
+                additionState[action.listId].items.splice(removeIndex,1);
+            }
+            return Object.assign({},state, additionState);
+        case ADD_TODO_LIST:
+            additionState[action.todoList._id] = action.todoList;
+            return Object.assign({},state, additionState);
+        case ADD_TODO_LISTS:
+            action.todoLists.map((todoList) => {
+                additionState[todoList._id] = todoList;});
+            return Object.assign({},state, additionState);
+      case DELETE_TODO_LIST:
+            return _.omit(state,action.todoList._id);
+        default:
+          return state
   }
 }
 

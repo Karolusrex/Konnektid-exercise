@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-
+import mongoose, {connection} from 'mongoose';
 
 // Create a new schema for our tweet data
 let schema = new mongoose.Schema({
@@ -8,6 +7,7 @@ let schema = new mongoose.Schema({
   completed  : {type: Boolean, default: false}
 });
 
+mongoose.model('Todo-item', schema);
 
-// Return a Tweet model based upon the defined schema
-export default mongoose.model('Todo-item', schema);
+
+//export default todoItem;

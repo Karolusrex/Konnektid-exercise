@@ -1,58 +1,79 @@
 import { expect } from 'chai';
-import TodoItem from '../../src/models/Todo-item';
-import TodoList from '../../src/models/Todo-list';
+import  '../../src/models';
 import {dbURI} from '../../src/config';
 import mongoose from 'mongoose';
 import clearDbModule from 'mocha-mongoose'
+import '../../src/models';
 
 const clearDb = clearDbModule(dbURI);
-    
-describe('Todo item', () => {
-    beforeEach((done) => {
-        if (mongoose.connection.db)
-            return done();
-        mongoose.connect(dbURI, done);
-  });
-    let mockupTodoItems = (cb) => {
-        new TodoItem({
-              text       : "do this and that"
-        }).save((error,firstModel) => {
-                expect(error).to.be.null;
-                new TodoItem({
-                      text       : "do this as well"
-                }).save((error,secondModel) => {
-                        cb(error,[firstModel,secondModel]);
-                });
-            });
-    };
-    
-    let saveTodoList = (cb) => {
-        mockupTodoItems( (error,todoItems) => {
+
+
+let saveTodoItems = (TodoItem,cb) => {
+
+    new TodoItem({
+          text       : "do this and that"
+    }).save((error,firstModel) => {
             expect(error).to.be.null;
-            let todoListStruct = {items: todoItems.map((item) => item._id)}
-            new TodoList(todoListStruct).save((error,model) => {
-                expect(error).to.be.null;
-                cb(error,model);
+            new TodoItem({
+                  text       : "do this as well"
+            }).save((error,secondModel) => {
+                    cb(error,[firstModel,secondModel]);
             });
         });
-    };
-    it('can be saved', (done) => {
-        saveTodoList(done);
+};
+
+let saveTodoList = (TodoItem,TodoList,cb) => {
+    saveTodoItems(TodoItem, (error,todoItems) => {
+        expect(error).to.be.null;
+        let generatedId = mongoose.Types.ObjectId();
+        let todoListStruct = {
+            text: "what we have to do today",
+            items: todoItems.map((item) => item._id),
+            _id: generatedId}
+        new TodoList(todoListStruct).save((error,model) => {
+            expect(error).to.be.null;
+            expect(model._id).to.be.equal(generatedId);
+            cb(error,model);
+        });
     });
-     it('can be retreived', (done) => {
-        saveTodoList((errorAlwaysNull,model) => {
-            TodoList.find({},(error,results) => {
+};
+
+describe('Todo item', () => {
+
+    beforeEach(function (done){
+        let initModels = () => {
+            this.TodoList = mongoose.model('Todo-list');
+            this.TodoItem = mongoose.model('Todo-item');
+        }
+        if (mongoose.connection.db){
+            initModels();
+            return done();
+        }
+        mongoose.connect(dbURI, (error,done) => {
+            initModels();
+            return done();
+        });
+  });
+
+
+    it('can be saved', function(done) {
+        saveTodoList(this.TodoItem,this.TodoList,done);
+    });
+     it('can be retreived', function(done) {
+        saveTodoList(this.TodoItem,this.TodoList,(errorAlwaysNull,model) => {
+            this.TodoList.find({},(error,results) => {
                 expect(results.length).to.be.equal(1);
                 done();
             });
         });
     });
-    
-    it('should delete items on cascade', (done) => {
-        saveTodoList((errorAlwaysNull,model) => {
+
+    it('should delete items on cascade', function(done) {
+
+        saveTodoList(this.TodoItem,this.TodoList,(errorAlwaysNull,model) => {
             model.remove((error,nRemoved) => {
                 expect(error).to.be.null;
-                TodoItem.find({},(error,results) => {
+                this.TodoItem.find({},(error,results) => {
                     expect(error).to.be.null;
                     expect(results.length).to.be.equal(0);
                     done();
@@ -62,3 +83,6 @@ describe('Todo item', () => {
     });
 
 });
+
+export default {saveTodoItems,saveTodoList};
+

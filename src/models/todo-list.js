@@ -1,18 +1,21 @@
-import mongoose from 'mongoose';
-import TodoItem from './Todo-item';
+import mongoose, {connection} from 'mongoose';
+
+
+let TodoItem = mongoose.model('Todo-item');
 
 // Create a new schema for our tweet data
 let schema = new mongoose.Schema({
-  items       : [{type: mongoose.Schema.Types.ObjectId, ref: 'Todo-item'}],
+  items       : {type:[{type: mongoose.Schema.Types.ObjectId, ref: 'Todo-item'}], default:[]},
+    text   : {type:String, required:true},
     date       : {type: Date, default: Date.now}
-});
+}, {strict:"throw"});
 
 //Delete items on cascade
 schema.pre('remove', function(next) {
-    console.log("Revoming items");
     TodoItem.remove({_id: { $in: this.items}}).exec();
     next();
 });
 
-// Return a Tweet model based upon the defined schema
-export default mongoose.model('Todo-list', schema);
+let todoList = mongoose.model('Todo-list', schema);
+
+//export default todoList;

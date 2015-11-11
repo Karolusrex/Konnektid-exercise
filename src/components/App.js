@@ -5,7 +5,9 @@ import Nav from 'react-bootstrap/lib/Nav';
 import Grid from 'react-bootstrap/lib/Grid';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import {IndexLinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router';
 import Home from './Home';
+import { connect } from 'react-redux';
 
 export default React.createClass({
     generateMenuItem(link,text,eventKey, query={}) {
@@ -18,6 +20,7 @@ export default React.createClass({
     },
   render() {
       const childContent = this.props.children || (<Home/>);
+       
     return (
         
       <div>
@@ -25,7 +28,7 @@ export default React.createClass({
             
         <header>
         <Navbar>
-            <NavBrand><a href="#">Todo app</a></NavBrand>
+            <NavBrand><Link to="/">Todo app</Link></NavBrand>
             <Nav>
                 {this.generateMenuItem("/","Home",1)}
                 {this.generateMenuItem("about","About",2)}
