@@ -4,6 +4,7 @@ import http from '../utils/HttpClient'
 import {connect} from 'react-redux'
 import {completeTodo} from '../actions';
 import {Transition} from 'react-overlays';
+import format from 'date-format';
 
 let todoItem =  React.createClass({
     getInitialState: function(props) {
@@ -25,7 +26,7 @@ let todoItem =  React.createClass({
         setTimeout(() => this.setState({show:true}),10);
     },
   render() {
-      let todoTitle = (<h5> {this.props.item.text} </h5>);
+      let todoContent = (<div> {this.state.item.text} <small className="date-specification"> - created  {format('yy/MM/dd hh:mm:ss', new Date(this.state.item.date))}</small></div>);
     return (
                <Transition
                   in={this.state.show}
@@ -35,7 +36,7 @@ let todoItem =  React.createClass({
                   enteringClassName='in'
                 >
                       <div className="todo-item">
-                        <Input type="checkbox"  defaultChecked={this.state.item.completed} onClick={() => this.onSwitchCompleteTodo()} label={this.props.item.text}/>
+                        <Input type="checkbox"  defaultChecked={this.state.item.completed} onClick={() => this.onSwitchCompleteTodo()} label={todoContent}/>
                       </div>
                    </Transition>
     );

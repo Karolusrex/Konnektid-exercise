@@ -26,6 +26,9 @@ let InputAdd = React.createClass({
   render() {
       const addButton = (
           <Button bsStyle="primary" onClick={() => {
+            if(this.state.newText == ''){
+                return;
+            }
             this.setState({
               newText: ''
             });
@@ -41,12 +44,6 @@ let InputAdd = React.createClass({
     );
   }
 });
-
-
-//How to set this to a function?
-/*newTodoList.propTypes = {
-  visibleTodos: React.propTypes.function
-}*/
 
 export default InputAdd;
 

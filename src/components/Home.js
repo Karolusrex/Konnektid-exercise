@@ -9,7 +9,6 @@ import PanelGroup from 'react-bootstrap/lib/PanelGroup';
 import SplitButton from 'react-bootstrap/lib/SplitButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
-
 import FontAwesome from 'react-fontawesome';
 import { addTodo, addTodoList, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions'
 
@@ -42,7 +41,6 @@ let todoApp = React.createClass({
         this.props.dispatch(setVisibilityFilter(newFilter));
     },
     render() {
-       console.log(this.props.todoLists);
         let filterButtons = Object.keys(this.state.filterTexts).map((filterOption,index) => {
             return (
                 <MenuItem key={index} eventKey={index}
@@ -69,22 +67,23 @@ let todoApp = React.createClass({
         <PageHeader>Home</PageHeader>
         </Row>
         <Row>
-        <Col md={3}>
+        <div className="pull-left filter-container">
         <SplitButton bsStyle="default" id="split-button-filter" title={this.state.filterText}>
             {filterButtons}
         </SplitButton>
-        </Col>
-            <Col md={9}>
+        </div>
+            <Col className="pull-right" md={9}>
                                 <InputAdd placeHolder="New todo list..." onAdd={this.addNewTodoList}/>
+        <PanelGroup activeKey={this.state.activeKey} accordion>
+                  {todoLists}
+                
+              </PanelGroup>
    </Col>
         </Row>
         <Row>
             <Col mdOffset={3} md={9}>
                     
-              <PanelGroup activeKey={this.state.activeKey} accordion>
-                  {todoLists}
-                
-              </PanelGroup>
+              
             </Col>
         </Row>
       </div>
@@ -140,6 +139,8 @@ function select(state) {
     visibilityFilter: state.visibilityFilter
   }
 }
+
+
 
 // Wrap the component to inject dispatch and state into it
 export default connect(select)(todoApp);
