@@ -129,12 +129,12 @@ function selectTodos(todos, filter) {
     if(allTodos === undefined){
         return allTodos = [];
     }
-    return allTodos;
+    return allTodos.sort((a, b) => new Date(a.date) - new Date(b.date));
 }
 
 function select(state) {
   return {
-    todoLists: objToArray(state.todoLists),
+    todoLists: objToArray(state.todoLists).sort((a, b) => new Date(a.date) - new Date(b.date)),
     visibleTodos: selectTodos(state.todos, state.visibilityFilter),
     visibilityFilter: state.visibilityFilter
   }
