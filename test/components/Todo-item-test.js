@@ -5,15 +5,20 @@ import TestUtils from 'react-addons-test-utils';
 
 import { expect } from 'chai';
 import TodoItem from '../../src/components/Todo-item';
-
+import todoApp from '../../src/reducers';
+import {createStore} from 'redux';
+import { Provider } from 'react-redux';
 
 describe('Todo item', () => {
   
 
     let prepareItem = function(itemData){
+        let store = createStore(todoApp);
         
         let renderedComponent = TestUtils.renderIntoDocument(
-            <TodoItem item = {itemData}/>
+            <Provider store={store}>
+                <TodoItem item = {itemData}/>
+            </Provider>
         );
         
         let inputComponent = TestUtils.findRenderedDOMComponentWithTag(

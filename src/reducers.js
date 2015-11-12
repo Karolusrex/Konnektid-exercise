@@ -47,7 +47,7 @@ function todos(state = {}, action) {
         return Object.assign({},state, additionState);
     case COMPLETE_TODO:
         additionState[action.todo._id] = state[action.todo._id];
-        additionState[action.todo._id].completed=true;
+        additionState[action.todo._id].completed=action.todo.completed;
         return Object.assign({},state, additionState);
     case DELETE_TODO:
         return _.omit(state,action.todo._id);

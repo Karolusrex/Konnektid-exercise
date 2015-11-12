@@ -21,7 +21,7 @@ let initialState = JSON.parse(document.getElementById('initial-state').innerHTML
 const store = createStore(reducers, initialState);
 
 let history = createHistory();
-
+   
 
 
 ReactDOM.render(

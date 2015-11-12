@@ -28,7 +28,7 @@ export default React.createClass({
             
         <header>
         <Navbar>
-            <NavBrand><Link to="/">Todo app</Link></NavBrand>
+            <NavBrand><Link to="/">Konnektodo</Link></NavBrand>
             <Nav>
                 {this.generateMenuItem("/","Home",1)}
                 {this.generateMenuItem("about","About",2)}

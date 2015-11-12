@@ -1,5 +1,6 @@
 import React from 'react';
 import packageJSON from '../../package.json';
+import PageHeader from 'react-bootstrap/lib/PageHeader';
 
 export default React.createClass({
   render() {
@@ -8,7 +9,7 @@ export default React.createClass({
 
     return (
       <div>
-        <h2>Powered by</h2>
+        <PageHeader>Powered by</PageHeader>
         <ul>
           {[...deps, ...devDeps]}
         </ul>

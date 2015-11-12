@@ -51,6 +51,7 @@ describe('State', () => {
                         expect(storedTodos[second_model._id].text).to.be.equal("do this as well");
                         //Complete one todo
                         expect(storedTodos[second_model._id].completed).to.be.false;
+                        second_model.completed=true;
                         store.dispatch(reduxActions.completeTodo(second_model));
                         expect(storedTodos[second_model._id].completed).to.be.true;
                         expect(Object.keys(storedTodos).length).to.be.equal(2);

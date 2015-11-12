@@ -12,8 +12,5 @@ describe('About', () => {
     expect(about.type).to.equal('div');
   });
 
-  it('should have an h2 tag containing the text "About"', () => {
-    expect(about.props.children).to.contain(<h2>About</h2>);
-  });
 
 });

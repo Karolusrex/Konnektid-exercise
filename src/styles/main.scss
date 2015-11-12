@@ -25,3 +25,14 @@ $font-family-base: 'Raleway', sans-serif;
 .todo-list li.list-group-item {
    display:flex;
 }
+
+.fade {
+  max-height: 0;
+  -webkit-transition: max-height 1500ms linear;
+       -o-transition: max-height 1500ms linear;
+          transition: max-height 1500ms linear;
+}
+
+.in {
+  max-height: 100px;
+}
