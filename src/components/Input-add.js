@@ -23,24 +23,28 @@ let InputAdd = React.createClass({
           newText: this.refs.input.getValue()
         });
       },
+    submit(event) {
+        if(event){
+            event.preventDefault();
+        }
+        if(this.state.newText == ''){
+            return;
+        }
+        this.setState({
+          newText: ''
+        });
+        this.props.onAdd(this.state.newText)
+    },
   render() {
       const addButton = (
-          <Button bsStyle="primary" onClick={() => {
-            if(this.state.newText == ''){
-                return;
-            }
-            this.setState({
-              newText: ''
-            });
-            this.props.onAdd(this.state.newText)
-      }} >
+          <Button bsStyle="primary" onClick={() => this.submit()} >
             +
           </Button>
         );
     return (
-    <form>
+    <form onSubmit={(event) => this.submit(event)} >
         <Input ref="input" onChange={this.handleChange} type="text" value={this.state.newText} buttonAfter={addButton} placeholder={this.props.placeHolder}/>
-    </form>
+     </form>
     );
   }
 });
